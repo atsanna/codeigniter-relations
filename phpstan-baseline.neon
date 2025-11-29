@@ -1,0 +1,67 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Call to an undefined method CodeIgniter\\Model\:\:eagerLoadRelations\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Relations/BelongsTo.php
+
+		-
+			message: '#^Call to an undefined method CodeIgniter\\Model\:\:eagerLoadRelations\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Relations/BelongsToMany.php
+
+		-
+			message: '#^Call to an undefined method CodeIgniter\\Model\:\:eagerLoadRelations\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Relations/HasMany.php
+
+		-
+			message: '#^Call to an undefined method CodeIgniter\\Model\:\:eagerLoadRelations\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Relations/HasManyThrough.php
+
+		-
+			message: '#^Call to an undefined method CodeIgniter\\Model\:\:eagerLoadRelations\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Relations/HasOne.php
+
+		-
+			message: '#^Call to an undefined method CodeIgniter\\Model\:\:getTable\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Relations/HasOne.php
+
+		-
+			message: '#^Call to an undefined method CodeIgniter\\Model\:\:eagerLoadRelations\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Relations/HasOneThrough.php
+
+		-
+			message: '#^Call to an undefined method CodeIgniter\\Model\:\:eagerLoadRelations\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Relations/MorphMany.php
+
+		-
+			message: '#^Call to an undefined method CodeIgniter\\Model\:\:eagerLoadRelations\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Relations/MorphOne.php
+
+		-
+			message: '#^Call to an undefined method CodeIgniter\\Model\:\:getTable\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Relations/MorphOne.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertEmpty\(\) with non\-empty\-array\<string, string\> will always evaluate to false\.$#'
+			identifier: method.impossibleType
+			count: 1
+			path: tests/ValidationErrorsTest.php
