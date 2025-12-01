@@ -27,17 +27,7 @@ abstract class Relation
     /**
      * The related model instance
      */
-    public Model $model;
-
-    /**
-     * The primary key on the parent model
-     */
-    public string $primaryKey;
-
-    /**
-     * The foreign key on the related model
-     */
-    public string $foreignKey;
+    protected Model $model;
 
     /**
      * Optional query callback for custom constraints
@@ -76,27 +66,14 @@ abstract class Relation
      * @param string|null $primaryKey        Optional primary key override
      */
     public function __construct(
-        public Model $parentModel,
+        protected Model $parentModel,
         string $relatedModelClass,
-        ?string $foreignKey = null,
-        ?string $primaryKey = null,
+        protected ?string $foreignKey = null,
+        protected ?string $primaryKey = null,
     ) {
         $this->model      = model($relatedModelClass);
         $this->primaryKey = $primaryKey ?? get_model_property($this->parentModel, 'primaryKey');
-        $this->foreignKey = $foreignKey ?? $this->guessForeignKey();
-    }
-
-    /**
-     * Guess the foreign key name based on convention
-     *
-     * Uses the parent model's table name (singular) and primary key
-     * to generate a foreign key following the pattern: {singular_table}_{primary_key}
-     *
-     * @return string The guessed foreign key name
-     */
-    protected function guessForeignKey(): string
-    {
-        return get_foreign_key($this->parentModel);
+        $this->foreignKey = $foreignKey ?? get_foreign_key($this->parentModel);
     }
 
     /**
