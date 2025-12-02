@@ -6,11 +6,9 @@ namespace Michalsn\CodeIgniterRelations\Relations;
 
 use CodeIgniter\Entity\Entity;
 use CodeIgniter\Model;
-use Exception;
 use Michalsn\CodeIgniterRelations\Enums\RelationTypes;
-use Michalsn\CodeIgniterRelations\Exceptions\RelationException;
-use Michalsn\CodeIgniterRelations\Exceptions\RelationWriteException;
 use Michalsn\CodeIgniterRelations\Traits\PerParentLimit;
+use Michalsn\CodeIgniterRelations\Traits\SavesDirectMany;
 
 /**
  * HasMany Relation
@@ -24,6 +22,7 @@ use Michalsn\CodeIgniterRelations\Traits\PerParentLimit;
 class HasMany extends Relation
 {
     use PerParentLimit;
+    use SavesDirectMany;
 
     /**
      * @var RelationTypes The relation type
@@ -81,129 +80,12 @@ class HasMany extends Relation
         return $this->model->findAll();
     }
 
-    public function save(array|object $data): false|object
+    protected function setRelationKeys(array|object &$data): void
     {
-        if ($this->contextParentId === null) {
-            throw RelationException::forMissingParentContext('save()');
-        }
-
-        // Set the foreign key
         if (is_array($data)) {
             $data[$this->foreignKey] = $this->contextParentId;
         } else {
             $data->{$this->foreignKey} = $this->contextParentId;
-        }
-
-        $primaryKey = get_model_property($this->model, 'primaryKey');
-
-        // Determine if this is an update or insert based on primary key presence
-        $hasPrimaryKey = is_array($data) ? isset($data[$primaryKey]) : isset($data->{$primaryKey});
-
-        if ($hasPrimaryKey) {
-            // Update existing record
-            $id = is_array($data) ? $data[$primaryKey] : $data->{$primaryKey};
-
-            if (! $this->model->update($id, $data)) {
-                return false;
-            }
-
-            // Return the updated entity
-            return $this->model->find($id);
-        }
-
-        // Insert new record
-        $insertId = $this->model->insert($data, true);
-
-        if ($insertId === false) {
-            return false;
-        }
-
-        // Return the inserted entity
-        return $this->model->find($insertId);
-    }
-
-    public function saveMany(array $dataSet, bool $useTransaction = true): array
-    {
-        if ($this->contextParentId === null) {
-            throw RelationException::forMissingParentContext('saveMany()');
-        }
-
-        $db             = $this->model->db;
-        $succeededIds   = [];
-        $failedIndexes  = [];
-        $errors         = [];
-        $primaryKey     = get_model_property($this->model, 'primaryKey');
-        $useTransaction = $useTransaction && $db->transDepth === 0; // Don't nest transactions
-
-        if ($useTransaction) {
-            $db->transStart();
-        }
-
-        try {
-            foreach ($dataSet as $index => $data) {
-                // Set the foreign key
-                if (is_array($data)) {
-                    $data[$this->foreignKey] = $this->contextParentId;
-                } else {
-                    $data->{$this->foreignKey} = $this->contextParentId;
-                }
-
-                $hasPrimaryKey = is_array($data) ? isset($data[$primaryKey]) : isset($data->{$primaryKey});
-                $entityId      = null;
-
-                if ($hasPrimaryKey) {
-                    // Update existing
-                    $entityId = is_array($data) ? $data[$primaryKey] : $data->{$primaryKey};
-                    $success  = $this->model->update($entityId, $data);
-                } else {
-                    // Insert new
-                    $entityId = $this->model->insert($data, true);
-                    $success  = $entityId !== false;
-                }
-
-                if (! $success) {
-                    $failedIndexes[] = $index;
-                    $errors[$index]  = $this->model->errors();
-
-                    if ($useTransaction) {
-                        // Rollback and throw exception
-                        $db->transRollback();
-
-                        throw RelationWriteException::forTransactionRollback(
-                            $succeededIds,
-                            $failedIndexes,
-                            $errors,
-                            'save',
-                            $index,
-                        );
-                    }
-                } else {
-                    $succeededIds[] = $entityId;
-                }
-            }
-
-            if ($useTransaction) {
-                $db->transComplete();
-            }
-
-            // If there were failures and no transaction, throw exception with partial results
-            if ($failedIndexes !== []) {
-                throw RelationWriteException::forPartialFailure(
-                    $succeededIds,
-                    $failedIndexes,
-                    $errors,
-                );
-            }
-
-            return $succeededIds;
-        } catch (RelationWriteException $e) {
-            throw $e;
-        } catch (Exception $e) {
-            if ($useTransaction) {
-                $db->transRollback();
-            }
-
-            throw $e;
         }
     }
 

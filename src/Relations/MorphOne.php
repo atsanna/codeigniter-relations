@@ -22,7 +22,7 @@ use Michalsn\CodeIgniterRelations\Traits\OfMany;
  * The imageable_type stores the parent model class name,
  * and imageable_id stores the parent's ID.
  */
-class MorphOne extends Relation
+class MorphOne extends MorphRelation
 {
     use OfMany;
 
@@ -30,42 +30,6 @@ class MorphOne extends Relation
      * @var RelationTypes The relation type
      */
     public RelationTypes $type = RelationTypes::MorphOne;
-
-    /**
-     * The morph type field name
-     */
-    protected string $morphType;
-
-    /**
-     * The morph ID field name
-     */
-    protected string $morphId;
-
-    /**
-     * Constructor
-     *
-     * @param Model       $parentModel       The parent model instance
-     * @param string      $relatedModelClass The related model class
-     * @param string      $morphName         The morph name (e.g., 'imageable')
-     * @param string|null $type              Optional type field override
-     * @param string|null $id                Optional id field override
-     * @param string|null $localKey          Optional local key override
-     */
-    public function __construct(
-        Model $parentModel,
-        string $relatedModelClass,
-        protected string $morphName,
-        ?string $type = null,
-        ?string $id = null,
-        ?string $localKey = null,
-    ) {
-        $this->parentModel = $parentModel;
-        $this->model       = model($relatedModelClass);
-        $this->morphType   = $type ?? $this->morphName . '_type';
-        $this->morphId     = $id ?? $this->morphName . '_id';
-        $this->primaryKey  = $localKey ?? get_model_property($parentModel, 'primaryKey');
-        $this->foreignKey  = $this->morphId; // For compatibility with base class
-    }
 
     public function eagerLoad(array $results, string $returnType, string $relationName): array
     {
