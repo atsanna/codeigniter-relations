@@ -12,7 +12,7 @@ A powerful package that adds seamless **relationship management** to CodeIgniter
 - **9 Relation Types**: `HasOne`, `HasMany`, `BelongsTo`, `BelongsToMany`, `HasOneThrough`, `HasManyThrough`, `MorphOne`, `MorphMany`, and `MorphTo`
 - **Eager Loading**: Prevent N+1 queries with `with()` and nested relations
 - **Lazy Loading**: Automatic loading when accessing relation properties
-- **Active Record Pattern**: Save and delete entities directly (`$user->save()`, `$user->delete()`)
+- **Entity Model Integration**: Save and delete entities directly (`$user->save()`, `$user->delete()`)
 - **Relation Writes**: Save related data through relations (`$user->posts()->save([...])`)
 - **Polymorphic Relations**: Relations that can belong to multiple model types
 - **Convention-Based**: Minimal configuration with sensible defaults

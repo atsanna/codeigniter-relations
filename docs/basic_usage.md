@@ -2,7 +2,7 @@
 
 This library works with both entities and simple arrays or objects. If your models use `'array'` or `'object'` as the return type, you can still use the `with()` method for eager loading relations. This prevents N+1 queries and works with all relation types.
 
-However, features like lazy loading, writing relations through entities, and Active Record methods require entity classes with the `HasLazyRelations` trait. For the full feature set, using custom entities is recommended.
+However, features like lazy loading, writing relations through entities, and Entity Model Integration methods require entity classes with the `HasLazyRelations` trait. For the full feature set, using custom entities is recommended.
 
 ### Eager loading
 

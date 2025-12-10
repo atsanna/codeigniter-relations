@@ -78,6 +78,6 @@ This trait enables:
 
 - **Lazy loading**: Automatic loading of relations when accessed via property
 - **Relation reloading**: `refresh()` method to reload entity and all relations, `load()` method to load specific relations
-- **Active Record pattern**: `$user->save()` and `$user->delete()` methods
+- **Entity Model Integration**: `$user->save()` and `$user->delete()` methods
 - **Relation writes**: `$user->posts()->save([...])` to save related records
 
