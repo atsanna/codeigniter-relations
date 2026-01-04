@@ -80,7 +80,7 @@ trait OfMany
      * - Cheapest order: ofMany('price', OrderType::MIN)
      * - Latest post: ofMany('created_at', OrderType::MAX)
      *
-     * @param string     $column Column to aggregate on
+     * @param string    $column Column to aggregate on
      * @param OrderType $order  Aggregate function (MIN or MAX)
      */
     public function ofMany(string $column, OrderType $order): self
