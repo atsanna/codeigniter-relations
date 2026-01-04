@@ -37,7 +37,7 @@ Same structure as HasMany, but we retrieve only one record based on specific cri
 ```php
 use Michalsn\CodeIgniterRelations\Relations\HasOne;
 use Michalsn\CodeIgniterRelations\Traits\HasRelations;
-use Michalsn\CodeIgniterRelations\Enums\OrderTypes;
+use Michalsn\CodeIgniterRelations\Enums\OrderType;
 
 class UserModel extends Model
 {
@@ -58,7 +58,7 @@ class UserModel extends Model
 
     public function bestPost(): HasOne
     {
-        return $this->hasOne(PostModel::class)->ofMany('rating', OrderTypes::DESC);
+        return $this->hasOne(PostModel::class)->ofMany('rating', OrderType::MAX);
     }
 }
 ```
@@ -94,17 +94,17 @@ Returns one record ordered by a specific column and direction.
 **Parameters:**
 
 - `$column` - The column to order by
-- `$order` - `OrderTypes::ASC` or `OrderTypes::DESC`
+- `$order` - `OrderTypes::MIN` or `OrderTypes::MAX
 
 ```php
 public function bestPost(): HasOne
 {
-    return $this->hasOne(PostModel::class)->ofMany('rating', OrderTypes::DESC);
+    return $this->hasOne(PostModel::class)->ofMany('rating', OrderTypes::MAX);
 }
 
 public function cheapestProduct(): HasOne
 {
-    return $this->hasOne(ProductModel::class)->ofMany('price', OrderTypes::ASC);
+    return $this->hasOne(ProductModel::class)->ofMany('price', OrderTypes::MIN);
 }
 ```
 
@@ -189,7 +189,7 @@ class UserModel extends Model
 
     public function mostViewedPost(): HasOne
     {
-        return $this->hasOne(PostModel::class)->ofMany('views', OrderTypes::DESC);
+        return $this->hasOne(PostModel::class)->ofMany('views', OrderTypes::MAX);
     }
 }
 ```

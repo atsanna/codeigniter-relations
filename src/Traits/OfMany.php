@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Michalsn\CodeIgniterRelations\Traits;
 
-use Michalsn\CodeIgniterRelations\Enums\OrderTypes;
+use Michalsn\CodeIgniterRelations\Enums\OrderType;
 
 /**
  * Provides "of many" functionality for singular relations (HasOne, MorphOne).
@@ -23,7 +23,7 @@ trait OfMany
     /**
      * Order direction for "of many" selection
      */
-    protected ?OrderTypes $ofManyOrder = null;
+    protected ?OrderType $ofManyOrder = null;
 
     /**
      * Whether this is an "of many" relation
@@ -40,7 +40,7 @@ trait OfMany
      */
     public function latestOfMany(): self
     {
-        return $this->ofMany($this->getOrderField(), OrderTypes::MAX);
+        return $this->ofMany($this->getOrderField(), OrderType::MAX);
     }
 
     /**
@@ -53,7 +53,7 @@ trait OfMany
      */
     public function oldestOfMany(): self
     {
-        return $this->ofMany($this->getOrderField(), OrderTypes::MIN);
+        return $this->ofMany($this->getOrderField(), OrderType::MIN);
     }
 
     /**
@@ -76,14 +76,14 @@ trait OfMany
      * Used to select a specific record from multiple potential matches.
      *
      * Examples:
-     * - Most expensive order: ofMany('price', OrderTypes::MAX)
-     * - Cheapest order: ofMany('price', OrderTypes::MIN)
-     * - Latest post: ofMany('created_at', OrderTypes::MAX)
+     * - Most expensive order: ofMany('price', OrderType::MAX)
+     * - Cheapest order: ofMany('price', OrderType::MIN)
+     * - Latest post: ofMany('created_at', OrderType::MAX)
      *
      * @param string     $column Column to aggregate on
-     * @param OrderTypes $order  Aggregate function (MIN or MAX)
+     * @param OrderType $order  Aggregate function (MIN or MAX)
      */
-    public function ofMany(string $column, OrderTypes $order): self
+    public function ofMany(string $column, OrderType $order): self
     {
         $this->ofManyColumn = $column;
         $this->ofManyOrder  = $order;

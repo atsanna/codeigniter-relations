@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Michalsn\CodeIgniterRelations\Enums;
 
-enum OrderTypes: string
+enum OrderType: string
 {
     case MIN = 'MIN';
     case MAX = 'MAX';

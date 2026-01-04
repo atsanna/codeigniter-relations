@@ -43,7 +43,7 @@ Same structure as MorphMany, but we retrieve only one record based on specific c
 ```php
 use Michalsn\CodeIgniterRelations\Relations\MorphOne;
 use Michalsn\CodeIgniterRelations\Traits\HasRelations;
-use Michalsn\CodeIgniterRelations\Enums\OrderTypes;
+use Michalsn\CodeIgniterRelations\Enums\OrderType;
 
 class PostModel extends Model
 {
@@ -65,7 +65,7 @@ class PostModel extends Model
     public function bestComment(): MorphOne
     {
         return $this->morphOne(CommentModel::class, 'commentable')
-            ->ofMany('rating', OrderTypes::DESC);
+            ->ofMany('rating', OrderType::MAX);
     }
 }
 ```
@@ -86,7 +86,7 @@ class VideoModel extends Model
     public function bestComment(): MorphOne
     {
         return $this->morphOne(CommentModel::class, 'commentable')
-            ->ofMany('rating', OrderTypes::DESC);
+            ->ofMany('rating', OrderTypes::MAX);
     }
 }
 ```
@@ -121,19 +121,19 @@ Returns one morphed record ordered by a specific column and direction.
 
 **Parameters:**
 - `$column` - The column to order by
-- `$order` - `OrderTypes::ASC` or `OrderTypes::DESC`
+- `$order` - `OrderTypes::MIN` or `OrderTypes::MAX`
 
 ```php
 public function bestComment(): MorphOne
 {
     return $this->morphOne(CommentModel::class, 'commentable')
-        ->ofMany('rating', OrderTypes::DESC);
+        ->ofMany('rating', OrderTypes::MAX);
 }
 
 public function lowestRatedReview(): MorphOne
 {
     return $this->morphOne(ReviewModel::class, 'reviewable')
-        ->ofMany('rating', OrderTypes::ASC);
+        ->ofMany('rating', OrderTypes::MIN;
 }
 ```
 
@@ -211,7 +211,7 @@ class PostModel extends Model
     public function highestRatedComment(): MorphOne
     {
         return $this->morphOne(CommentModel::class, 'commentable')
-            ->ofMany('rating', OrderTypes::DESC);
+            ->ofMany('rating', OrderTypes::MAX);
     }
 }
 
