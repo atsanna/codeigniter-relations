@@ -96,6 +96,9 @@ return static function (RectorConfig $rectorConfig): void {
 
         // May load view files directly when detecting classes
         StringClassNameToClassConstantRector::class,
+        CompleteDynamicPropertiesRector::class => [
+            __DIR__ . '/src/Relations/Relation.php',
+        ],
     ]);
 
     // auto import fully qualified class names

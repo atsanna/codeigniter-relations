@@ -215,7 +215,7 @@ class BelongsTo extends Relation
             // Update the loaded relation in memory ONLY if parent is an object
             // This preserves any nested relations on the old entity when passing an integer
             if ($this->relationName !== null && is_object($parent)) {
-                $this->parentEntity->{$this->relationName} = $parent;
+                $this->setEntityRelation($this->parentEntity, $this->relationName, $parent);
             }
 
             // Sync original state since we've persisted to database
@@ -252,7 +252,7 @@ class BelongsTo extends Relation
 
             // Clear the loaded relation in memory
             if ($this->relationName !== null) {
-                $this->parentEntity->{$this->relationName} = null;
+                $this->setEntityRelation($this->parentEntity, $this->relationName, null);
             }
 
             // Sync original state since we've persisted to database

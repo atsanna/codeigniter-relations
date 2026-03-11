@@ -8,6 +8,7 @@ use App\Entities\Post;
 use App\Entities\Profile;
 use App\Entities\User;
 use Closure;
+use CodeIgniter\Model;
 
 /**
  * Enables lazy loading of relations in entities.
@@ -36,6 +37,9 @@ trait HasLazyRelations
      */
     private array $loadedRelations = [];
 
+    private ?Model $relationModel       = null;
+    private bool $relationModelResolved = false;
+
     /**
      * Override property access to enable lazy loading
      *
@@ -45,14 +49,21 @@ trait HasLazyRelations
      */
     public function __get(string $key)
     {
-        $result = parent::__get($key);
-
-        // If result is null and not yet loaded, try lazy loading the relation
-        if ($result === null && ! isset($this->loadedRelations[$key])) {
-            $result = $this->handleRelation($key);
+        if (array_key_exists($key, $this->attributes)) {
+            return parent::__get($key);
         }
 
-        return $result;
+        $model = $this->getRelationModel();
+
+        if ($model !== null && method_exists($model, $key)) {
+            if (! isset($this->loadedRelations[$key]) && ! array_key_exists($key, $this->attributes)) {
+                return $this->handleRelation($key, $model);
+            }
+
+            return $this->attributes[$key] ?? null;
+        }
+
+        return parent::__get($key);
     }
 
     /**
@@ -65,20 +76,8 @@ trait HasLazyRelations
      *
      * @return mixed The loaded relation data or null
      */
-    private function handleRelation(string $name): mixed
+    private function handleRelation(string $name, Model $model): mixed
     {
-        $className = $this->findModelClass();
-
-        if ($className === null) {
-            return null;
-        }
-
-        $model = model($className);
-
-        if (! method_exists($model, $name)) {
-            return null;
-        }
-
         $relation = $model->{$name}();
 
         // Use the relation's own lazyLoad method which knows how to query correctly
@@ -93,6 +92,23 @@ trait HasLazyRelations
         ];
 
         return $this->attributes[$name];
+    }
+
+    /**
+     * Resolve the matching model once for the lifetime of the entity instance.
+     */
+    private function getRelationModel(): ?Model
+    {
+        if ($this->relationModelResolved) {
+            return $this->relationModel;
+        }
+
+        $className = $this->findModelClass();
+
+        $this->relationModel         = $className === null ? null : model($className);
+        $this->relationModelResolved = true;
+
+        return $this->relationModel;
     }
 
     /**

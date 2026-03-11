@@ -270,10 +270,29 @@ abstract class Relation
     protected function attachRelationToResult(array|object &$result, string $relationName, mixed $data): void
     {
         if (is_object($result)) {
+            if ($result instanceof Entity) {
+                $this->setEntityRelation($result, $relationName, $data);
+
+                return;
+            }
+
             $result->{$relationName} = $data;
         } else {
             $result[$relationName] = $data;
         }
+    }
+
+    /**
+     * Store relation data on an entity without triggering strict __set() implementations.
+     */
+    protected function setEntityRelation(Entity $entity, string $relationName, mixed $value): void
+    {
+        $setter = function (string $name, mixed $relationValue): void {
+            // @phpstan-ignore-next-line Bound to Entity scope below.
+            $this->attributes[$name] = $relationValue;
+        };
+
+        Closure::bind($setter, $entity, Entity::class)($relationName, $value);
     }
 
     /**
