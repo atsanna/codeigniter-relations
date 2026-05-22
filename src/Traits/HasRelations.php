@@ -95,15 +95,16 @@ trait HasRelations
      * @internal
      *
      * @param mixed        $entities  Single entity or array of entities
-     * @param array|string $relations Relations to load (same format as with())
+     * @param array|string $relations Relation name(s) or array with callbacks
+     * @param Closure|null $callback  Optional query callback when loading a string relation
      *
      * @return mixed The entities with relations loaded
      */
-    public function loadRelationsOn(mixed $entities, array|string $relations): mixed
+    public function loadRelationsOn(mixed $entities, array|string $relations, ?Closure $callback = null): mixed
     {
         // Normalize relations to array
         if (is_string($relations)) {
-            $relations = [$relations];
+            $relations = $callback === null ? [$relations] : [$relations => $callback];
         }
 
         // Build with array from relations

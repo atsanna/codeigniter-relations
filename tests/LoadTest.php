@@ -67,7 +67,7 @@ final class LoadTest extends TestCase
         $allPostsCount = count($user->posts);
 
         // Reload with a filter
-        $user->load(['posts' => static fn ($q) => $q->where('status', 'published')]);
+        $user->load('posts', static fn ($q) => $q->where('status', 'published'));
 
         $publishedCount = count($user->posts);
         $this->assertLessThanOrEqual($allPostsCount, $publishedCount);

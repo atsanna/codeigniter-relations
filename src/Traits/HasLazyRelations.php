@@ -241,6 +241,7 @@ trait HasLazyRelations
      *
      * Supports multiple syntax styles:
      * - load('posts')
+     * - load('posts', fn($q) => $q->where('status', 'published'))
      * - load(['posts', 'comments'])
      * - load(['posts' => fn($q) => $q->where('status', 'published')])
      * - load(['posts', 'posts.comments'])
@@ -250,8 +251,9 @@ trait HasLazyRelations
      *   $user->load('posts'); // Load posts without touching user attributes
      *
      * @param array|string $relations Relation name(s) or array with callbacks
+     * @param Closure|null $callback  Optional query callback when loading a string relation
      */
-    public function load(array|string $relations): self
+    public function load(array|string $relations, ?Closure $callback = null): self
     {
         // Get model class
         $className = $this->findModelClass();
@@ -262,7 +264,7 @@ trait HasLazyRelations
 
         $model = model($className);
 
-        $model->loadRelationsOn($this, $relations);
+        $model->loadRelationsOn($this, $relations, $callback);
 
         return $this;
     }
