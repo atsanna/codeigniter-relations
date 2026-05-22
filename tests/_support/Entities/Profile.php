@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-/**
- * Example Profile Entity demonstrating lazy loading
- */
+/** Example Profile Entity demonstrating lazy loading */
 
 namespace Tests\Support\Entities;
 
