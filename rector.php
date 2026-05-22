@@ -26,6 +26,7 @@ use Rector\CodingStyle\Rector\FuncCall\CountArrayToEmptyArrayComparisonRector;
 use Rector\CodingStyle\Rector\FuncCall\VersionCompareFuncCallToConstantRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\ClassMethod\RemoveUnusedPromotedPropertyRector;
+use Rector\DeadCode\Rector\Property\RemoveUselessVarTagRector;
 use Rector\EarlyReturn\Rector\Foreach_\ChangeNestedForeachIfsToEarlyContinueRector;
 use Rector\EarlyReturn\Rector\If_\ChangeIfElseValueAssignToEarlyReturnRector;
 use Rector\EarlyReturn\Rector\If_\RemoveAlwaysElseRector;
@@ -98,6 +99,17 @@ return static function (RectorConfig $rectorConfig): void {
         StringClassNameToClassConstantRector::class,
         CompleteDynamicPropertiesRector::class => [
             __DIR__ . '/src/Relations/Relation.php',
+        ],
+        RemoveUselessVarTagRector::class => [
+            __DIR__ . '/tests/BelongsToManyTest.php',
+            __DIR__ . '/tests/BelongsToTest.php',
+            __DIR__ . '/tests/HasManyTest.php',
+            __DIR__ . '/tests/HasManyThroughTest.php',
+            __DIR__ . '/tests/HasOneTest.php',
+            __DIR__ . '/tests/HasOneThroughTest.php',
+            __DIR__ . '/tests/MorphManyTest.php',
+            __DIR__ . '/tests/MorphOneTest.php',
+            __DIR__ . '/tests/MorphToTest.php',
         ],
     ]);
 
