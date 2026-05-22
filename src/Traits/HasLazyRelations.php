@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Michalsn\CodeIgniterRelations\Traits;
 
-use App\Entities\Post;
-use App\Entities\Profile;
-use App\Entities\User;
 use Closure;
 use CodeIgniter\Model;
 
@@ -139,6 +136,38 @@ trait HasLazyRelations
     public function getLoadedRelations(): array
     {
         return $this->loadedRelations;
+    }
+
+    /**
+     * Check changed state while treating loaded relations separately from attributes.
+     *
+     * Child entity changes should be tracked on the child entity itself, not as
+     * a changed relation attribute on the parent.
+     */
+    public function hasChanged(?string $key = null): bool
+    {
+        if ($key !== null) {
+            return isset($this->loadedRelations[$key])
+                ? false
+                : parent::hasChanged($key);
+        }
+
+        $keys = array_unique([
+            ...array_keys($this->attributes),
+            ...array_keys($this->original),
+        ]);
+
+        foreach ($keys as $attributeKey) {
+            if (isset($this->loadedRelations[$attributeKey])) {
+                continue;
+            }
+
+            if (parent::hasChanged($attributeKey)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
