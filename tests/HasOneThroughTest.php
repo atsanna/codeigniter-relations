@@ -90,10 +90,12 @@ final class HasOneThroughTest extends TestCase
         $this->assertArrayHasKey('name', $countries[0]);
 
         $this->assertArrayHasKey('latestPost', $countries[0]);
+        /** @var mixed $latestPost */
+        $latestPost = $countries[0]['latestPost'];
 
-        if ($countries[0]['latestPost'] !== null) {
-            $this->assertIsArray($countries[0]['latestPost']);
-            $this->assertArrayHasKey('user_id', $countries[0]['latestPost']);
+        if ($latestPost !== null) {
+            $this->assertIsArray($latestPost);
+            $this->assertArrayHasKey('user_id', $latestPost);
         }
     }
 

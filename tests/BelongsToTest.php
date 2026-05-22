@@ -99,11 +99,13 @@ final class BelongsToTest extends TestCase
         $this->assertArrayHasKey('country_id', $users[0]);
 
         $this->assertArrayHasKey('country', $users[0]);
+        /** @var mixed $country */
+        $country = $users[0]['country'];
 
-        if ($users[0]['country'] !== null) {
-            $this->assertIsArray($users[0]['country']);
-            $this->assertArrayHasKey('id', $users[0]['country']);
-            $this->assertSame($users[0]['country_id'], $users[0]['country']['id']);
+        if ($country !== null) {
+            $this->assertIsArray($country);
+            $this->assertArrayHasKey('id', $country);
+            $this->assertSame($users[0]['country_id'], $country['id']);
         }
     }
 

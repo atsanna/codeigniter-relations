@@ -106,10 +106,12 @@ final class MorphToTest extends TestCase
         $this->assertArrayHasKey('imageable_id', $images[0]);
 
         $this->assertArrayHasKey('imageable', $images[0]);
+        /** @var mixed $imageable */
+        $imageable = $images[0]['imageable'];
 
-        if ($images[0]['imageable'] !== null) {
-            $this->assertIsArray($images[0]['imageable']);
-            $this->assertArrayHasKey('id', $images[0]['imageable']);
+        if ($imageable !== null) {
+            $this->assertIsArray($imageable);
+            $this->assertArrayHasKey('id', $imageable);
         }
     }
 

@@ -39,8 +39,10 @@ final class HasOneTest extends TestCase
         $isset = isset($user->profile);
         $this->assertTrue($isset);
 
-        $this->assertInstanceOf(Profile::class, $user->profile);
-        $this->assertSame('1', $user->profile->user_id);
+        /** @var mixed $profile */
+        $profile = $user->profile;
+        $this->assertInstanceOf(Profile::class, $profile);
+        $this->assertSame('1', $profile->user_id);
     }
 
     public function testEagerLoadHasOneWithFindAll()
@@ -57,8 +59,10 @@ final class HasOneTest extends TestCase
         $isset = isset($users[0]->profile);
         $this->assertTrue($isset);
 
-        $this->assertInstanceOf(Profile::class, $users[0]->profile);
-        $this->assertSame($users[0]->id, $users[0]->profile->user_id);
+        /** @var mixed $profile */
+        $profile = $users[0]->profile;
+        $this->assertInstanceOf(Profile::class, $profile);
+        $this->assertSame($users[0]->id, $profile->user_id);
     }
 
     public function testEagerLoadHasOneAsArray()
@@ -89,9 +93,11 @@ final class HasOneTest extends TestCase
         $this->assertArrayHasKey('name', $users[0]);
 
         $this->assertArrayHasKey('profile', $users[0]);
-        $this->assertIsArray($users[0]['profile']);
-        $this->assertArrayHasKey('user_id', $users[0]['profile']);
-        $this->assertSame($users[0]['id'], $users[0]['profile']['user_id']);
+        /** @var mixed $profile */
+        $profile = $users[0]['profile'];
+        $this->assertIsArray($profile);
+        $this->assertArrayHasKey('user_id', $profile);
+        $this->assertSame($users[0]['id'], $profile['user_id']);
     }
 
     public function testEagerLoadHasOneWithModelAsObject()

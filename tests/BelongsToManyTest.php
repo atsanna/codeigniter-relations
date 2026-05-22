@@ -182,11 +182,13 @@ final class BelongsToManyTest extends TestCase
         $this->assertArrayHasKey('name', $students[0]);
 
         $this->assertArrayHasKey('courses', $students[0]);
-        $this->assertIsArray($students[0]['courses']);
+        /** @var mixed $courses */
+        $courses = $students[0]['courses'];
+        $this->assertIsArray($courses);
 
-        $this->assertIsArray($students[0]['courses'][0]);
-        $this->assertArrayHasKey('id', $students[0]['courses'][0]);
-        $this->assertArrayHasKey('title', $students[0]['courses'][0]);
+        $this->assertIsArray($courses[0]);
+        $this->assertArrayHasKey('id', $courses[0]);
+        $this->assertArrayHasKey('title', $courses[0]);
     }
 
     public function testEagerLoadBelongsToManyWithModelAsObject()

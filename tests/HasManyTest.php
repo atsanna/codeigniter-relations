@@ -92,12 +92,14 @@ final class HasManyTest extends TestCase
         $this->assertArrayHasKey('name', $users[0]);
 
         $this->assertArrayHasKey('posts', $users[0]);
-        $this->assertIsArray($users[0]['posts']);
+        /** @var mixed $posts */
+        $posts = $users[0]['posts'];
+        $this->assertIsArray($posts);
 
-        if ($users[0]['posts'] !== []) {
-            $this->assertIsArray($users[0]['posts'][0]);
-            $this->assertArrayHasKey('user_id', $users[0]['posts'][0]);
-            $this->assertSame($users[0]['id'], $users[0]['posts'][0]['user_id']);
+        if ($posts !== []) {
+            $this->assertIsArray($posts[0]);
+            $this->assertArrayHasKey('user_id', $posts[0]);
+            $this->assertSame($users[0]['id'], $posts[0]['user_id']);
         }
     }
 

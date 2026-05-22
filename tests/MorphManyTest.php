@@ -101,12 +101,14 @@ final class MorphManyTest extends TestCase
         $this->assertArrayHasKey('title', $posts[0]);
 
         $this->assertArrayHasKey('images', $posts[0]);
-        $this->assertIsArray($posts[0]['images']);
+        /** @var mixed $images */
+        $images = $posts[0]['images'];
+        $this->assertIsArray($images);
 
-        if ($posts[0]['images'] !== []) {
-            $this->assertIsArray($posts[0]['images'][0]);
-            $this->assertArrayHasKey('imageable_type', $posts[0]['images'][0]);
-            $this->assertArrayHasKey('imageable_id', $posts[0]['images'][0]);
+        if ($images !== []) {
+            $this->assertIsArray($images[0]);
+            $this->assertArrayHasKey('imageable_type', $images[0]);
+            $this->assertArrayHasKey('imageable_id', $images[0]);
         }
     }
 

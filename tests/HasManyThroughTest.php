@@ -141,11 +141,13 @@ final class HasManyThroughTest extends TestCase
         $this->assertArrayHasKey('name', $countries[0]);
 
         $this->assertArrayHasKey('posts', $countries[0]);
-        $this->assertIsArray($countries[0]['posts']);
+        /** @var mixed $posts */
+        $posts = $countries[0]['posts'];
+        $this->assertIsArray($posts);
 
-        if ($countries[0]['posts'] !== []) {
-            $this->assertIsArray($countries[0]['posts'][0]);
-            $this->assertArrayHasKey('user_id', $countries[0]['posts'][0]);
+        if ($posts !== []) {
+            $this->assertIsArray($posts[0]);
+            $this->assertArrayHasKey('user_id', $posts[0]);
         }
     }
 

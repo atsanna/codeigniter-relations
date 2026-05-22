@@ -43,10 +43,12 @@ final class MorphOneTest extends TestCase
         $isset = isset($post->featuredImage);
         $this->assertTrue($isset);
 
-        if ($post->featuredImage !== null) {
-            $this->assertIsObject($post->featuredImage);
-            $this->assertSame('Tests\\Support\\Models\\PostModel', $post->featuredImage->imageable_type);
-            $this->assertSame('1', $post->featuredImage->imageable_id);
+        /** @var mixed $featuredImage */
+        $featuredImage = $post->featuredImage;
+        if ($featuredImage !== null) {
+            $this->assertIsObject($featuredImage);
+            $this->assertSame('Tests\\Support\\Models\\PostModel', $featuredImage->imageable_type);
+            $this->assertSame('1', $featuredImage->imageable_id);
         }
     }
 
@@ -64,10 +66,12 @@ final class MorphOneTest extends TestCase
         $isset = isset($user->avatar);
         $this->assertTrue($isset);
 
-        if ($user->avatar !== null) {
-            $this->assertIsObject($user->avatar);
-            $this->assertSame('Tests\\Support\\Models\\UserModel', $user->avatar->imageable_type);
-            $this->assertSame('1', $user->avatar->imageable_id);
+        /** @var mixed $avatar */
+        $avatar = $user->avatar;
+        if ($avatar !== null) {
+            $this->assertIsObject($avatar);
+            $this->assertSame('Tests\\Support\\Models\\UserModel', $avatar->imageable_type);
+            $this->assertSame('1', $avatar->imageable_id);
         }
     }
 
@@ -113,11 +117,13 @@ final class MorphOneTest extends TestCase
         $this->assertArrayHasKey('title', $posts[0]);
 
         $this->assertArrayHasKey('featuredImage', $posts[0]);
+        /** @var mixed $featuredImage */
+        $featuredImage = $posts[0]['featuredImage'];
 
-        if ($posts[0]['featuredImage'] !== null) {
-            $this->assertIsArray($posts[0]['featuredImage']);
-            $this->assertArrayHasKey('imageable_type', $posts[0]['featuredImage']);
-            $this->assertArrayHasKey('imageable_id', $posts[0]['featuredImage']);
+        if ($featuredImage !== null) {
+            $this->assertIsArray($featuredImage);
+            $this->assertArrayHasKey('imageable_type', $featuredImage);
+            $this->assertArrayHasKey('imageable_id', $featuredImage);
         }
     }
 
